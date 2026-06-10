@@ -102,7 +102,10 @@ jobs:
       - name: Build AppImage + Flatpak
         env:
           APPIMAGE_EXTRACT_AND_RUN: "1"
-        run: npx electron-builder build --linux AppImage flatpak --${ARCH} --publish never
+          RELEASE_DATE: ${{ github.event.release.published_at }}
+        run: |
+          node helper_scripts/stamp-metainfo.js
+          npx electron-builder build --linux AppImage flatpak --${ARCH} --publish never
 
       - name: Attach Linux bundles to release
         env:

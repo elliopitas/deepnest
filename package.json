@@ -23,9 +23,9 @@
     "dist": "cross-replace npx @electron/packager . deepnest-v$npm_package_version --overwrite --ignore='\\.github' --ignore='\\.vscode' --ignore='\\.husky' --ignore='deepnest-v[0-9]+\\.[0-9]+\\.[0-9]+-[a-z0-9_-]' --ignore='out' --ignore='renovate\\.json' --ignore='\\.readthedocs\\.yaml' --ignore='CHANGELOG\\.md' --ignore='examples' --ignore='\\.gitignore' --ignore='playwright-report' --ignore='test.log'",
     "build-dist": "electron-builder build --win",
     "build-dist-signed": "electron-builder build --win --publish never",
-    "build-linux": "electron-builder build --linux",
-    "build-linux-appimage": "electron-builder build --linux AppImage",
-    "build-linux-flatpak": "electron-builder build --linux flatpak",
+    "build-linux": "node helper_scripts/stamp-metainfo.js && electron-builder build --linux",
+    "build-linux-appimage": "node helper_scripts/stamp-metainfo.js && electron-builder build --linux AppImage",
+    "build-linux-flatpak": "node helper_scripts/stamp-metainfo.js && electron-builder build --linux flatpak",
     "dist-all": "npm run clean-all && npm install && npm run build && npm run dist",
     "dist-all-signed": "npm run clean-all && npm install && npm run build && npm run build-dist-signed",
     "prepare": "husky || true",
@@ -188,7 +188,7 @@
       ],
       "files": [
         [
-          "net.deepnest.app.metainfo.xml",
+          "dist-resources/net.deepnest.app.metainfo.xml",
           "/share/metainfo/net.deepnest.app.metainfo.xml"
         ]
       ]
