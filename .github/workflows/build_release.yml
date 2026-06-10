@@ -45,15 +45,19 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            // Retrieve the latest release information using the GitHub API
-            const release = await github.rest.repos.getLatestRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo
-            });
-            core.setOutput("upload_url", release.data.upload_url);
-            core.setOutput("release_id", release.data.id);
-            core.setOutput("tag", release.data.tag_name);
-            console.log("Found release:", release.data.tag_name);
+            // Retrieve relese that that triggered ci/run else latest release information using the GitHub API
+            let release = context.payload.release;
+            if (!release) {
+              const res = await github.rest.repos.getLatestRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo
+              });
+              release = res.data;
+            }
+            core.setOutput("upload_url", release.upload_url);
+            core.setOutput("release_id", release.id);
+            core.setOutput("tag", release.tag_name);
+            console.log("Using release:", release.tag_name);
 
       - name: Build project
         run: |
@@ -150,15 +154,19 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            // Retrieve the latest release information using the GitHub API
-            const release = await github.rest.repos.getLatestRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo
-            });
-            core.setOutput("upload_url", release.data.upload_url);
-            core.setOutput("release_id", release.data.id);
-            core.setOutput("tag", release.data.tag_name);
-            console.log("Found release:", release.data.tag_name);
+            // Retrieve relese that that triggered ci/run else latest release information using the GitHub API
+            let release = context.payload.release;
+            if (!release) {
+              const res = await github.rest.repos.getLatestRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo
+              });
+              release = res.data;
+            }
+            core.setOutput("upload_url", release.upload_url);
+            core.setOutput("release_id", release.id);
+            core.setOutput("tag", release.tag_name);
+            console.log("Using release:", release.tag_name);
 
       - name: Build project
         run: |
@@ -219,15 +227,19 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            // Retrieve the latest release information using the GitHub API
-            const release = await github.rest.repos.getLatestRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo
-            });
-            core.setOutput("upload_url", release.data.upload_url);
-            core.setOutput("release_id", release.data.id);
-            core.setOutput("tag", release.data.tag_name);
-            console.log("Found release:", release.data.tag_name);
+            // Retrieve relese that that triggered ci/run else latest release information using the GitHub API
+            let release = context.payload.release;
+            if (!release) {
+              const res = await github.rest.repos.getLatestRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo
+              });
+              release = res.data;
+            }
+            core.setOutput("upload_url", release.upload_url);
+            core.setOutput("release_id", release.id);
+            core.setOutput("tag", release.tag_name);
+            console.log("Using release:", release.tag_name);
 
       - name: Build project
         run: |
