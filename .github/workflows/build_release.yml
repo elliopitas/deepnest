@@ -82,6 +82,33 @@ jobs:
           asset_name: deepnest-${{ steps.get_release.outputs.tag }}-${{ env.BUILD_FOR_OS}}-${{ env.ARCH }}.zip
           asset_content_type: application/zip
 
+      - name: Install AppImage/Flatpak host tooling
+        run: |
+          sudo apt-get update
+          sudo apt-get install -yq flatpak flatpak-builder elfutils
+
+      - name: Set up Flatpak runtimes
+        run: |
+          flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+          flatpak --user install -y flathub \
+            org.freedesktop.Platform//24.08 \
+            org.freedesktop.Sdk//24.08 \
+            org.electronjs.Electron2.BaseApp//24.08
+
+      - name: Build AppImage + Flatpak
+        env:
+          APPIMAGE_EXTRACT_AND_RUN: "1"
+        run: npx electron-builder build --linux AppImage flatpak --${ARCH}
+
+      - name: Attach Linux bundles to release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload "${{ steps.get_release.outputs.tag }}" \
+            dist/deepnest-v*-linux-${ARCH}.AppImage \
+            dist/deepnest-v*-linux-${ARCH}.flatpak \
+            --clobber
+
 
 
   build-and-release-macos:

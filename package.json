@@ -1,5 +1,6 @@
 {
   "name": "deepnest",
+  "productName": "Deepnest",
   "version": "1.5.6",
   "description": "Deep nesting for Laser and CNC",
   "private": true,
@@ -22,6 +23,9 @@
     "dist": "cross-replace npx @electron/packager . deepnest-v$npm_package_version --overwrite --ignore='\\.github' --ignore='\\.vscode' --ignore='\\.husky' --ignore='deepnest-v[0-9]+\\.[0-9]+\\.[0-9]+-[a-z0-9_-]' --ignore='out' --ignore='renovate\\.json' --ignore='\\.readthedocs\\.yaml' --ignore='CHANGELOG\\.md' --ignore='examples' --ignore='\\.gitignore' --ignore='playwright-report' --ignore='test.log'",
     "build-dist": "electron-builder build --win",
     "build-dist-signed": "electron-builder build --win --publish never",
+    "build-linux": "electron-builder build --linux",
+    "build-linux-appimage": "electron-builder build --linux AppImage",
+    "build-linux-flatpak": "electron-builder build --linux flatpak",
     "dist-all": "npm run clean-all && npm install && npm run build && npm run dist",
     "dist-all-signed": "npm run clean-all && npm install && npm run build && npm run build-dist-signed",
     "prepare": "husky || true",
@@ -112,7 +116,7 @@
     ],
     "directories": {
       "app": ".",
-      "output": "deepnest-v${version}-win32-${arch}"
+      "output": "dist"
     },
     "win": {
       "target": [
@@ -142,6 +146,52 @@
     "mac": {
       "category": "public.app-category.utilities",
       "icon": "icon.icns"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "flatpak"
+      ],
+      "icon": "icon.icns",
+      "executableName": "deepnest",
+      "category": "Graphics",
+      "synopsis": "Deep nesting for Laser and CNC",
+      "description": "Open-source nesting for laser/plasma cutters and CNC machines; packs 2D parts tightly to minimize material waste.",
+      "artifactName": "${name}-v${version}-linux-${arch}.${ext}",
+      "desktop": {
+        "entry": {
+          "Name": "Deepnest",
+          "GenericName": "Nesting Application",
+          "Comment": "Deep nesting for Laser and CNC",
+          "Categories": "Graphics;Engineering;2DGraphics;",
+          "Keywords": "nesting;CAD;CNC;laser;SVG;DXF;cutting;",
+          "StartupWMClass": "deepnest"
+        }
+      }
+    },
+    "flatpak": {
+      "runtime": "org.freedesktop.Platform",
+      "runtimeVersion": "24.08",
+      "sdk": "org.freedesktop.Sdk",
+      "base": "org.electronjs.Electron2.BaseApp",
+      "baseVersion": "24.08",
+      "branch": "stable",
+      "finishArgs": [
+        "--share=ipc",
+        "--socket=x11",
+        "--socket=wayland",
+        "--device=dri",
+        "--share=network",
+        "--filesystem=home",
+        "--talk-name=org.freedesktop.Notifications",
+        "--env=ELECTRON_TRASH=gio"
+      ],
+      "files": [
+        [
+          "net.deepnest.app.metainfo.xml",
+          "/share/metainfo/net.deepnest.app.metainfo.xml"
+        ]
+      ]
     }
   },
   "contributors": [

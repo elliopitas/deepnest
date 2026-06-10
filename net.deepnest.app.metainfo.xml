@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>net.deepnest.app</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <name>Deepnest</name>
+  <summary>Deep nesting for Laser and CNC</summary>
+  <description>
+    <p>
+      Deepnest is an open-source nesting application for laser cutters, plasma
+      cutters, and other CNC machines. It arranges 2D parts tightly onto sheets
+      to minimize material waste.
+    </p>
+    <p>Features:</p>
+    <ul>
+      <li>Imports SVG and DXF parts (DXF/DWG/PS/EPS via the online converter)</li>
+      <li>Part-in-part nesting and shared-edge optimization</li>
+      <li>Multi-threaded nesting engine</li>
+    </ul>
+  </description>
+  <launchable type="desktop-id">net.deepnest.app.desktop</launchable>
+  <url type="homepage">https://www.deepnest.net</url>
+  <url type="bugtracker">https://github.com/deepnest-next/deepnest/issues</url>
+  <url type="vcs-browser">https://github.com/deepnest-next/deepnest</url>
+  <developer id="net.deepnest">
+    <name>deepnest-next Community</name>
+  </developer>
+  <content_rating type="oars-1.1" />
+</component>
