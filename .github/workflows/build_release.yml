@@ -89,7 +89,7 @@ jobs:
       - name: Install AppImage/Flatpak host tooling
         run: |
           sudo apt-get update
-          sudo apt-get install -yq flatpak flatpak-builder elfutils
+          sudo apt-get install -yq flatpak flatpak-builder elfutils rpm
 
       - name: Set up Flatpak runtimes
         run: |
@@ -99,13 +99,13 @@ jobs:
             org.freedesktop.Sdk//24.08 \
             org.electronjs.Electron2.BaseApp//24.08
 
-      - name: Build AppImage + Flatpak
+      - name: Build AppImage + Flatpak + RPM
         env:
           APPIMAGE_EXTRACT_AND_RUN: "1"
           RELEASE_DATE: ${{ github.event.release.published_at }}
         run: |
           node helper_scripts/stamp-metainfo.js
-          npx electron-builder build --linux AppImage flatpak --${ARCH} --publish never
+          npx electron-builder build --linux AppImage flatpak rpm --${ARCH} --publish never
 
       - name: Attach Linux bundles to release
         env:
@@ -114,6 +114,7 @@ jobs:
           gh release upload "${{ steps.get_release.outputs.tag }}" \
             dist/*.AppImage \
             dist/*.flatpak \
+            dist/*.rpm \
             --clobber
 
 
